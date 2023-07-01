@@ -14,7 +14,7 @@ Steps need:
 **Step One** is both the hardest and most interesting aspect of this project. 
 So, what should "Vision" look like?
 My ideas were either to create a mask or bounding box where the enemies are. I prefer using a mask, because to me it feels more precise and looks cooler. Unfortunately, due to model and data limitations, I used bounding boxes as labels.
-So, if we are using bounding boxes, what does "Vision Look Like"?
+So, if we are using bounding boxes, what does "Vision" Look Like?
 ![Valorant Enemy Vision](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Data%20Images/enemy_detection.png "Valorant Enemy Vision")
 
 # Data Collection
@@ -25,6 +25,7 @@ Luckily, I found two "good" datasets consisting of about ~9000 and ~4000 images,
 Potential Issues with the datasets:
 1. Both datasets appear to be images taken in sequence, possibly from a video, which means that separating the data into a train and validation split may not work as one would hope: If we have a sequence of three images and split the middle into the validation split, while the model wouldn't have "seen" the image before, it would be a sort of interpolation between images it has seen, decreasing its performance and generalization on new and realistic datasets i.e. it could overfit and be difficult to judge when it occurs
 2. In Valorant, enemies have an outline color to differentiate them from teammates. There are multiple options for what this color could be: red, yellow, etc. The large dataset only has enemies outlined in red, which could both make it too easy for the model to detect them by only checking for red, as well as decrease its performance and generalization on new and realistic datasets i.e. it could overfit and be difficult to judge when it occurs
+3. There are a lot of duplicate images in both datasets (I wrote a script that would loop through all of the images and remove duplicates).
 
 # Data Use
 
@@ -58,7 +59,7 @@ For each of the three base-models--SPT, WPT, and CPT--we then fine-tuned them us
 | **Partial Model** | PM-SPT  | PM-WPT | PM-CPT |
 | **Minimal Model** | MM-SPT  | MM-WPT | MM-CPT |
 
-All training runs were done for 50 epochs, with learning rate schedules using linear warmup and decay. After training, the best model was chosen. A batch size of 16 was used. Images were combined into a 2x2 mosaic for training. During validation, batches of 16 images were processes separately, which looked like:
+All training runs were done for 50 epochs, with learning rate schedules using linear warmup and decay. After training, the best model was chosen. A batch size of 16 was used. Images were combined into a 2x2 mosaic for training. During validation, batches of 16 images were processed separately, which looked like:
 ![Validation Batch Images](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Data%20Images/val_batch1_labels.jpg "Validation Batch Images")
 
 For fine-tuning, the average training times were:
@@ -146,3 +147,8 @@ I know what you're thinking: You JUST realized that??
 I don't know. I was just doing a fun computer vision project. Now that it's done, I've realized that 1. this would be really difficult for Valorant to detect and ban people for using and 2. It works way better than I anticipated. Testing this against images of the game made me realize that this would be supremely unfair to use, and I can't actually release it on github for just anyone to download. I am sorry.
 
 So this is as far as my project will go. If we ignore potential misuse of this project, it was lots of fun and it's really cool!
+
+# Future Improvements
+
+1. I noticed that zooming in on images with enemies far away, and then processing them with the detection model made it possible to detect them. So, instead of just processing an image, we could either: process the original and 5 (or something) zoomed in images to increase recall, or we could use the color mask before prediction to focus/zoom in on sections of interest. Both of these ideas would increase accuracy, while decreasing speed of prediction.
+2. We could dedicate time to creating larger and better datasets for our needs.
