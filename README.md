@@ -94,14 +94,18 @@ I know... I know... It absolutely couldn't happen to us. But just for fun, let's
 | **Enemy Body**    | 0.75    | 0.73   | 0.74   |
 | **Enemy Head**    | 0.35    | 0.31   | 0.26   |
 
-Not only have all of the scores decreased, the head recall gets worse with more pre-training. When we think about why, it may make sense that pre-training worsens the performance as it had to look at lots of images of both enemies and teammates that didn't have their heads labelled, which could make the model not consider the heads to be relevant, which would be very difficult to train itself out of.
+Not only have all of the scores decreased (which isn't necessarily terrible as my test data has its quirks), the head recall gets worse with more pre-training. When we think about why, it may make sense that pre-training worsens the performance as it had to look at lots of images of both enemies and teammates that didn't have their heads labelled, which could make the model not consider the heads to be relevant, which would be very difficult to train itself out of. I would say that the Enemy Body Recall is nominally better with SPT, so we shouldn't pay too much attention to that.
 
 In short, our pre-training data was both not suitable for our desired end goal, and we overfit our model on its data. A bad combination.
 
-We still did get something cool out of this:
+# Bonus Model Improvement
+
+We, as experts, know that enemies have an outline color. So what we can do is look at the pixel values of the image data, and if there is no outline color in an area, then we know there isn't an enemy, and if there is an outline color within an area, then there might be an enemy. We could use this to either mask bad predictions of the model or to focus where the model "looks" for enemies. This is actually extremely beneficial when teammates are within an image, so that we don't accidentally shoot them.
+
+What does all this look like?:
 (SHOW IMAGE PROGRESSION OF IMAGE LABELLING)
 
-# Bonus Model Improvement
+
 
 # Step 2 (and 3)
 Step 2 was very simple. Write a script that does the following:
