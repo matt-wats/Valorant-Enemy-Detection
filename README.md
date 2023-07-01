@@ -15,13 +15,12 @@ Steps need:
 So, what should "Vision" look like?
 My ideas were either to create a mask or bounding box where the enemies are. I prefer using a mask, because to me it feels more precise and looks cooler. Unfortunately, due to model and data limitations, I used bounding boxes as labels.
 So, if we are using bounding boxes, what does "Vision Look Like"?
-(INSERT IMAGE)
+![Valorant Enemy Vision](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Data%20Images/enemy_detection.png "Valorant Enemy Vision")
 
 # Data Collection
 
 To collect data, I went into Valorant with a friend and took screenshots of them doing different actions, with different backgrounds, as different characters. I captured and labeled 200 images, before realizing that to create a "sufficiently" good dataset would take a lot of time, so I am maintaining these images as a test set, but nothing more.
 Luckily, I found two "good" datasets consisting of about ~9000 and ~4000 images, with bounding box labels for enemies and teammates, and enemies and heads, respectively.
-(EXAMPLE IMAGES)
 
 Potential Issues with the datasets:
 1. Both datasets appear to be images taken in sequence, possibly from a video, which means that separating the data into a train and validation split may not work as one would hope: If we have a sequence of three images and split the middle into the validation split, while the model wouldn't have "seen" the image before, it would be a sort of interpolation between images it has seen, decreasing its performance and generalization on new and realistic datasets i.e. it could overfit and be difficult to judge when it occurs
@@ -59,8 +58,8 @@ For each of the three base-models--SPT, WPT, and CPT--we then fine-tuned them us
 | **Partial Model** | PM-SPT  | PM-WPT | PM-CPT |
 | **Minimal Model** | MM-SPT  | MM-WPT | MM-CPT |
 
-All training runs were done for 50 epochs, with learning rate schedules using linear warmup and decay. After training, the best model was chosen. A batch size of 16 was used. Images were combined into a 2x2 mosaic for prediction. Each training batch looked like:
-(TRAINING BATCH IMAGE)
+All training runs were done for 50 epochs, with learning rate schedules using linear warmup and decay. After training, the best model was chosen. A batch size of 16 was used. Images were combined into a 2x2 mosaic for training. During validation, batches of 16 images were processes separately, which looked like:
+![Validation Batch Images](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Data%20Images/val_batch1_labels.jpg "Validation Batch Images")
 
 For fine-tuning, the average training times were:
 | Model         | Time        |
@@ -69,9 +68,9 @@ For fine-tuning, the average training times were:
 | Partial Model | 10.233 mins |
 | Minimal Model | 9.617 mins  |
 
-The validation losses for class and box during training for the FMs and CPTs are as follows:
-(INSERT GRAPHS)
-
+The validation losses for class and box during training for the FMs and MM-CPT are as follows:
+![Validation Box Losses](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Top%204/val_box_loss%20VS%20epoch.jpeg "Validation Box Losses")
+![Validation Class Losses](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Top%204/val_cls_loss%20VS%20epoch.jpeg "Validation Class Losses")
 
 # Results
 
@@ -102,10 +101,29 @@ In short, our pre-training data was both not suitable for our desired end goal, 
 
 We, as experts, know that enemies have an outline color. So what we can do is look at the pixel values of the image data, and if there is no outline color in an area, then we know there isn't an enemy, and if there is an outline color within an area, then there might be an enemy. We could use this to either mask bad predictions of the model or to focus where the model "looks" for enemies. This is actually extremely beneficial when teammates are within an image, so that we don't accidentally shoot them.
 
+My implemented process follows 4 steps:
+1. Get image
+2. Run image through YOLO detection model to get candidate objects
+3. Get mask of enemy outline color (in this case yellow)
+4. Remove objects not near color mask for final predictions
+
 What does all this look like?:
-(SHOW IMAGE PROGRESSION OF IMAGE LABELLING)
 
+Get image:
 
+![Valorant Enemy Image](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Data%20Images/enemy_image.png "Valorant Enemy Image")
+
+Detect objects:
+
+![Valorant Enemy Error Vision](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Data%20Images/error_enemy_detection.png "Valorant Enemy Error Vision")
+
+Get color mask:
+
+![Valorant Enemy Mask Vision](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Data%20Images/enemy_color_mask.png "Valorant Enemy Mask Vision")
+
+Only detect objects near color mask:
+
+![Valorant Enemy Vision](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Data%20Images/enemy_detection.png "Valorant Enemy Vision")
 
 # Step 2 (and 3)
 Step 2 was very simple. Write a script that does the following:
