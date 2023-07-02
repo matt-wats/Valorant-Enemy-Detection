@@ -1,6 +1,16 @@
 # Valorant-Enemy-Detection
 Using object detection to locate enemies in Valorant and aim at them automatically. 
 
+# Demo of Finished Project
+
+![hippo](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Data%20Images/valorant-vision-demo.gif)
+
+This is a video/gif I took using the final model and program I wrote. After a key is pressed, it first centers your mouse (like how in Valorant your mouse is always in the center), then uses the trained model to detect enemies, then moves the mouse cursor onto the enemy (hopefully their head).
+
+If you're wondering why it looks so funky, I don't know. I recorded and "edited" the video in a couple of minutes with whatever free software popped up first.
+
+# Abstract
+
 There is a video game called Valorant. The creators, Riot Games, describe it as: "VALORANT: a 5v5 character-based tactical FPS where precise gunplay meets unique agent abilities". The goal of the game is to kill all your opponents.
 It is good to shoot your enemy. It is not good to shoot your teammate. It is great to shoot your enemy in the head.
 
