@@ -5,9 +5,8 @@ Using object detection to locate enemies in Valorant and aim at them automatical
 
 ![hippo](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Data%20Images/valorant-vision-demo.gif)
 
-This is a video/gif I took using the final model and program I wrote. After a key is pressed, it first centers your mouse (like how in Valorant your mouse is always in the center), then uses the trained model to detect enemies, then moves the mouse cursor onto the enemy (hopefully their head).
-
-If you're wondering why it looks so funky, I don't know. I recorded and "edited" the video in a couple of minutes with whatever free software popped up first.
+This is a video/gif I took using the final model and program I wrote. I took a screen recording of me scrolling through screenshots I previously took in Valorant, and periodically hitting a key to activate the detection (twice per image).
+After the key is pressed, it first centers your mouse (like how in Valorant your mouse is always in the center), then uses the trained model to detect enemies, then moves the mouse cursor onto the enemy (hopefully their head).
 
 # Abstract
 
