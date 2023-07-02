@@ -161,3 +161,4 @@ So this is as far as my project will go. If we ignore potential misuse of this p
 
 1. I noticed that zooming in on images with enemies far away, and then processing them with the detection model made it possible to detect them. So, instead of just processing an image, we could either: process the original and 5 (or something) zoomed in images to increase recall, or we could use the color mask before prediction to focus/zoom in on sections of interest. Both of these ideas would increase accuracy, while decreasing speed of prediction.
 2. We could dedicate time to creating larger and better datasets for our needs.
+3. Train model using both datasets, but only train losses for the head class against images that would have the head labelled. This would allow us to use all of our data at once, without worsening prediction on the enemies' heads.
