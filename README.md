@@ -136,7 +136,7 @@ Only detect objects near color mask:
 ![Valorant Enemy Vision](https://github.com/matt-wats/Valorant-Enemy-Detection/blob/main/Analysis%20Images/Data%20Images/enemy_detection.png "Valorant Enemy Vision")
 
 # Step 2 (and 3)
-Step 2 was very simple. Write a script that does the following:
+Step 2 was very simple. I wrote a script that does the following:
 ```python
 image = TAKE SCREENSHOT
 potential_targets = model(image)
@@ -149,11 +149,11 @@ else if found "body" in real_targets:
 if AIM:
   shoot
 ```
-Which I did, but then I realized something: This is a cheat.
 
-I know what you're thinking: You JUST realized that??
+# Realizations
 
-I don't know. I was just doing a fun computer vision project. Now that it's done, I've realized that 1. this would be really difficult for Valorant to detect and ban people for using and 2. It works way better than I anticipated. Testing this against images of the game made me realize that this would be supremely unfair to use, and I can't actually release it on github for just anyone to download. I am sorry.
+I was just doing a fun computer vision project. Now that it's done, I've realized that 1. this would be really difficult for Valorant to detect and ban people for using and 2. It works way better than I anticipated. Testing this against images of the game made me realize that this would be extremely unfair to use, and I don't think I 
+should release the files for just anyone to see. 
 
 So this is as far as my project will go. If we ignore potential misuse of this project, it was lots of fun and it's really cool!
 
